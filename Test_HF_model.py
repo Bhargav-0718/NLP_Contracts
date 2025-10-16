@@ -24,7 +24,9 @@ sample_clauses = [
     "The Supplier shall indemnify and hold harmless the Buyer against all claims.",
     "This Agreement shall be governed by the laws of the State of New York.",
     "All payments must be made within thirty (30) days from invoice receipt.",
-    "The Receiving Party shall maintain strict confidentiality of all disclosed information."
+    "The Receiving Party shall maintain strict confidentiality of all disclosed information.",
+    "The Contractor agrees to deliver the services by the agreed deadlines.",
+    "In the event of a breach, the non-breaching party may seek remedies available at law."
 ]
 
 # -----------------------------
