@@ -1,0 +1,38 @@
+# --- Virtual environment directories ---
+Code/contract-nlp-env/
+.env/
+.venv/
+env/
+venv/
+
+# --- Python cache files ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# --- Jupyter Notebook checkpoints ---
+.ipynb_checkpoints/
+
+# --- Logs and temporary files ---
+*.log
+*.tmp
+*.bak
+*.swp
+
+# --- Model weights and checkpoints ---
+*.pt
+*.bin
+*.h5
+*.ckpt
+*.safetensors
+Code/legalbert_finetuned/checkpoint-*/
+legalbert_finetuned/checkpoint-*/
+# --- Large dataset files ---
+train_clauses.csv
+test_clauses.csv
+validation_clauses.csv
+legalbert_cuad_paragraph/
+CUAD_v1
+.vscode
+legalbert_finetuned

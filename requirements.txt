@@ -1,0 +1,34 @@
+# Core ML/NLP libraries
+torch>=2.0.0
+transformers>=4.30.0
+datasets>=2.13.0
+sentencepiece
+accelerate
+scikit-learn
+numpy
+pandas
+
+# Preprocessing
+nltk
+spacy
+tqdm
+
+# Visualization & Analysis
+matplotlib
+seaborn
+
+# Optional but useful
+jupyter
+notebook
+evaluate
+huggingface-hub
+kagglehub
+spacy-transformers
+seqeval
+huggingface_hub[hf_xet]
+openpyxl
+joblib
+python-docx
+PyMuPDF
+pandas
+pdfplumber
