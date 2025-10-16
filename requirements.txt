@@ -21,14 +21,11 @@ seaborn
 jupyter
 notebook
 evaluate
-huggingface-hub
-kagglehub
+huggingface_hub[hf_xet]>=0.16.4
 spacy-transformers
 seqeval
-huggingface_hub[hf_xet]
 openpyxl
 joblib
 python-docx
 PyMuPDF
-pandas
 pdfplumber
