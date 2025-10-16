@@ -116,14 +116,3 @@ Clauses are grouped into **5 Tiers** based on **criticality**:
 * **Efficiency**: Faster contract review process with prioritized clauses.
 * **Risk Management**: Highlights clauses that may expose organizations to liability.
 * **Practical Use**: Can be integrated into **contract management systems** or **legal AI assistants**.
-
----
-
-This updated README now fully reflects the **latest developments**:
-
-* Tiered clause classification
-* Legal-BERT predictions
-* CSV-ready outputs for reports
-* Summarization-ready for Gen AI integration
-
----
