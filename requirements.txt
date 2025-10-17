@@ -31,3 +31,5 @@ PyMuPDF
 pdfplumber
 openai
 dotenv
+reportlab
+fpdf
