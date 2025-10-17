@@ -36,3 +36,4 @@ legalbert_cuad_paragraph/
 CUAD_v1
 .vscode
 legalbert_finetuned
+.env

@@ -29,3 +29,4 @@ joblib
 python-docx
 PyMuPDF
 pdfplumber
+openai
