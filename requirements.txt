@@ -30,3 +30,4 @@ python-docx
 PyMuPDF
 pdfplumber
 openai
+dotenv
