@@ -1,6 +1,6 @@
 # 📜 NLP Contract Summarization & Risk-Sensitive Clause Review
 
-This project explores **NLP-based approaches** for **contract summarization** and **risk-sensitive clause review**, leveraging transformer-based models to help lawyers and organizations efficiently analyze complex contracts.
+This project explores **NLP-based approaches** for **contract summarization** and **Tier-wise clause review**, leveraging transformer-based models to help lawyers and organizations efficiently analyze complex contracts.
 
 ---
 
