@@ -1,144 +1,181 @@
-# 📜 NLP Contract Summarization & Risk-Sensitive Clause Review
+# 📜 NLP Contract Summarization & Tier-wise Clause Review
 
-This project explores **NLP-based approaches** for **contract summarization** and **Tier-wise clause review**, leveraging transformer-based models to help lawyers and organizations efficiently analyze complex contracts.
+This project presents an **NLP-powered framework** for **automated contract summarization** and **tier-wise clause classification**, helping legal professionals and organizations efficiently interpret and prioritize contractual information.  
+By leveraging transformer-based models such as **Legal-BERT**, **BART**, and **PEGASUS**, the system identifies, categorizes, and summarizes clauses to enhance accuracy, speed, and strategic decision-making in contract analysis.
 
 ---
 
-## 🚀 Problem Statement
+## 🚀 Project Overview
 
-Contracts often contain **thousands of clauses** with varying risk levels. Manual review is time-consuming and error-prone. This project aims to:
+Manual contract review is often **slow, repetitive, and complex**, requiring domain expertise to evaluate hundreds of clauses per agreement.  
+This project automates that process by:
 
-* Extract **key obligations, risks, and liabilities** from contracts.
-* Generate **abstractive summaries** for faster contract understanding.
-* Flag and suggest **revisions** for risky clauses.
-* **Tier clauses by criticality** to guide legal expert review.
-* Provide **graphical insights** for contract analysis (pie charts, bar charts, and more).
+- **Extracting clauses** from PDF/DOCX contracts.  
+- **Classifying each clause** using Legal-BERT into predefined categories.  
+- **Assigning Tier levels (1–5)** based on clause criticality and review priority.  
+- **Generating concise, abstractive summaries** using Gen AI (BART/PEGASUS).  
+- **Producing structured reports and CSV outputs** for downstream legal workflows.
+
+The end goal is to streamline legal document review and enable faster, tier-based contract understanding.
+
+---
+
+## 🧩 Problem Statement
+
+Contract review teams often face challenges such as:
+
+- Large volumes of lengthy contracts with inconsistent structures.  
+- Difficulty identifying key obligations and conditions quickly.  
+- Time-intensive manual analysis requiring specialized expertise.  
+- The need for standardized prioritization of clauses.  
+
+This project addresses these issues by combining **Legal NLP** and **Generative AI** to automatically extract, summarize, and categorize contractual content, supporting efficient legal review and prioritization.
 
 ---
 
 ## 📚 Literature Review
 
-We studied several datasets and benchmarks for legal NLP tasks:
+Several research efforts and datasets have contributed to the advancement of **legal NLP** tasks such as clause classification, contract understanding, and summarization. Key references include:
 
-* **CUAD (Contract Understanding Atticus Dataset)** → Clause-span extraction with ~13K expert annotations.
-* **MAUD (Merger Agreement Understanding Dataset)** → Question-answering on merger agreements.
-* **LexGLUE / LEDGAR** → Large-scale provision classification from SEC filings.
-* **LegalBench** → Benchmark for legal reasoning tasks.
-* **ACORD** → Clause retrieval dataset for drafting workflows.
-* **Other works** explored party-specific summarization, abstractive summarization of obligations, and smart contract summarization.
+| Dataset / Benchmark | Description | Links |
+|----------------------|-------------|--------|
+| **CUAD (Contract Understanding Atticus Dataset)** | 510 contracts with ~13K annotated clauses across 41 clause types for contract understanding. | [Paper](https://arxiv.org/abs/2103.06268) • [GitHub](https://github.com/TheAtticusProject/cuad) |
+| **MAUD (Merger Agreement Understanding Dataset)** | Clause-level question answering in merger agreements. | [Paper](https://arxiv.org/html/2301.00876) |
+| **LexGLUE / LEDGAR** | Large-scale legal document classification from SEC filings. | [Paper](https://aclanthology.org/2022.acl-long.297.pdf) |
+| **LegalBench** | Benchmark for evaluating legal reasoning in LLMs. | [Paper](https://arxiv.org/abs/2308.11462) |
+| **ACORD** | Dataset for clause retrieval and document drafting workflows. | — |
 
-📖 References:
-
-* [CUAD Paper](https://arxiv.org/abs/2103.06268) | [CUAD GitHub](https://github.com/TheAtticusProject/cuad)
-* [MAUD](https://arxiv.org/html/2301.00876)
-* [LexGLUE](https://aclanthology.org/2022.acl-long.297.pdf)
-* [LegalBench](https://arxiv.org/abs/2308.11462)
+These benchmarks guided the design of our clause classification and summarization pipelines.
 
 ---
 
-## 📂 Dataset
+## 📂 Dataset Details
 
-We primarily used **CUAD**, consisting of:
+This project primarily utilizes the **CUAD dataset**, which provides high-quality, expert-labeled contract data.
 
-* **510 commercial contracts**.
-* **13K expert-annotated clauses** across **41 clause types** (e.g., *Termination, Liability, Indemnification*).
-* Preprocessed into a **2-column dataset**: `[clause, label]`.
-* Labels mapped to **5 Tiers** for risk-prioritization in legal review.
+**Dataset Specifications:**
+- **510 commercial contracts**
+- **13,000+ annotated clauses**
+- **41 clause types** (e.g., Termination, Liability, Indemnification, IP Ownership)
+- **Mapped to 5 review tiers** for prioritization
+
+The dataset enables fine-tuning of both classification and summarization models for realistic legal document workflows.
 
 ---
 
-## ⚙️ Preprocessing
+## ⚙️ Preprocessing Pipeline
 
-* **PDF/DOCX extraction** using `pdfplumber` and `python-docx`.
-* **Segmentation** into clauses/paragraphs.
-* **Cleaning**: removal of headers/footers, whitespace normalization.
-* **Clause Classification**: map clause text → contract clause type → numeric label → Tier.
+### 🧾 Early Data Aggregation
+
+The original CUAD dataset was distributed as **~30 separate CSV files**, each corresponding to a distinct clause type (e.g., *Termination.csv*, *Liability.csv*, *Indemnification.csv*).  
+Each file contained clause-level annotations with the following columns:
+- **Contract Name**
+- **Clause Text**
+- **Clause Type**
+
+To streamline training and simplify downstream processing, these CSVs were **consolidated into a unified dataset:**
+
+> ✅ **`combined_clauses.csv`**
+
+**Steps for Aggregation:**
+1. Loaded all individual CSV files using `pandas`.  
+2. Added a `label` column representing the clause type derived from the filename.  
+3. Concatenated all dataframes into a single structure.  
+4. Normalized text by removing duplicates, newlines, and extra spaces.  
+5. Saved the combined corpus as `combined_clauses.csv` containing:  
+   ```
+   [Clause Text, Label]
+   ```
+
+This unified dataset serves as the foundational input for clause classification and tier assignment.
+
+---
+
+### 🧮 Text Preprocessing Steps
+
+Once unified, the following text processing pipeline was applied:
+
+1. **Text Extraction** — Extracted text from PDFs using `pdfplumber` and DOCX files using `python-docx`.  
+2. **Segmentation** — Divided contracts into **clauses** and **paragraphs** based on linguistic cues and punctuation.  
+3. **Cleaning** — Removed headers, footers, numbering, and redundant whitespace.  
+4. **Label Mapping** — Mapped CUAD clause labels to standardized labels for consistency.  
+5. **Tier Assignment** — Assigned each label to one of five predefined Tiers for review prioritization.
 
 ---
 
 ## 🧠 Model Architecture
 
-* **Base Model**: [Legal-BERT](https://huggingface.co/nlpaueb/legal-bert-base-uncased).
-* **Clause Classification**: maps clause text → clause label → Tier.
-* **Summarization**: abstractive models (BART/PEGASUS fine-tuned or Gen AI) for generating contract summaries.
-* **Risk-Sensitive Revision**: generative LLM prompts suggest safer clause rewrites.
+### 1. **Clause Classification**
+- **Model:** [Legal-BERT](https://huggingface.co/nlpaueb/legal-bert-base-uncased)  
+- **Objective:** Classify clauses into predefined clause types and assign them a Tier.  
+- **Output:** `(Clause Text → Label → Tier)`
+
+### 2. **Contract Summarization**
+- **Models:** [BART](https://huggingface.co/facebook/bart-large-cnn) / [PEGASUS](https://huggingface.co/google/pegasus-large)  
+- **Objective:** Generate **abstractive summaries** capturing the key points of the entire contract or selected tiers.  
+- **Output:** Coherent, domain-aware summaries suitable for professional review.
+
+### 3. **Integration**
+- Combined pipeline produces a **tiered summary** for each contract, linking clause predictions to summarization output.
 
 ---
 
-## 🔢 Tier System for Clauses
+## 🏷️ Tier System
 
-Clauses are grouped into **5 Tiers** based on **criticality**:
+Clauses are categorized into **five Tiers** based on their importance, contractual implications, and review priority.
 
-| Tier                   | Labels / Clauses (CUAD)                                                                                                                                                                                                                                                                                                                                                                                                          | Notes                                                                          |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 1 (Critical)           | Anti-assignment, Audit Rights, Cap on Liability, Exclusivity, Governing Law, IP Ownership Assignment, Liquidated Damages, Non-Compete, Termination for Convenience, Uncapped Liability                                                                                                                                                                                                                                           | Clauses that **must be reviewed** by legal experts. High-risk or high-impact.  |
-| 2 (Important)          | Competitive Restriction Exception, Covenant not to Sue, Insurance, Irrevocable or Perpetual License, Joint IP Ownership, License Grant, Minimum Commitment, Most Favored Nation, No-Solicit of Customers, No-Solicit of Employees, Non-Disparagement, Non-Transferable License, Post-termination Services, Price Restrictions, Revenue-Profit Sharing, Source Code Escrow, Unlimited/All-You-Can-Eat License, Volume Restriction | Important clauses, usually reviewed. Moderate risk or contractual obligations. |
-| 3 (Moderate)           | Change of Control, Renewal Term, Renewal Term-Answer, Warranty Duration                                                                                                                                                                                                                                                                                                                                                          | Standard or moderate-risk clauses. Less critical than Tier 1 & 2.              |
-| 4 (Low)                | Notice Period to Terminate Renewal, Notice Period to Terminate Renewal-Answer, ROFR-ROFO-ROFN, Third Party Beneficiary                                                                                                                                                                                                                                                                                                           | Low criticality. Often procedural or informational.                            |
-| 5 (Trivial / Optional) | Affiliate License-Licensee, Affiliate License-Licensor, Agreement Date, Agreement Date-Answer, Document Name, Effective Date, Effective Date-Answer, Expiration Date, Expiration Date-Answer, Parties, Parties-Answer                                                                                                                                                                                                            | Minimal review needed. Administrative or non-substantive clauses.              |
-
-**Explanation:**
-
-* **Tier 1** → High-priority clauses that **require legal expert review**.
-* **Tier 2** → Important clauses, usually reviewed but lower risk than Tier 1.
-* **Tier 3** → Moderate risk, standard clauses.
-* **Tier 4** → Low-risk clauses; procedural or informative.
-* **Tier 5** → Trivial clauses; may be skipped in automated review (e.g., names, dates, document info).
+| **Tier** | **Description** | **Typical Clauses (Examples)** |
+|-----------|-----------------|-------------------------------|
+| **Tier 1 — Critical** | Core clauses that significantly influence contractual terms; require top-priority review. | Termination, Liability, IP Ownership, Governing Law, Exclusivity |
+| **Tier 2 — Important** | Clauses defining major obligations or constraints that should be reviewed carefully. | Non-Compete, Indemnification, Insurance, Joint IP Ownership |
+| **Tier 3 — Moderate** | Common operational clauses; generally standard but may vary across contracts. | Warranty Duration, Renewal Terms |
+| **Tier 4 — Low** | Administrative or procedural clauses that seldom require in-depth analysis. | Notice Periods, Third-Party Beneficiary |
+| **Tier 5 — Trivial / Informational** | Basic document-level metadata and boilerplate elements. | Effective Date, Parties, Document Name |
 
 ---
 
 ## 📊 Training & Evaluation
 
-* Fine-tuned **Legal-BERT** on CUAD clause-label dataset.
-* Metrics: **Accuracy, F1 Score**.
-* Results:
+**Setup**
+- Fine-tuned **Legal-BERT** on the `combined_clauses.csv` dataset.  
+- Evaluated on held-out clauses using **Accuracy** and **F1 Score** metrics.  
+- Conducted experiments on GPU (A100/RTX-class hardware).
 
-  * Automatic clause classification reduces manual review time.
-  * Legal-BERT effectively classifies complex clauses.
-  * Tier system guides legal experts to focus on **high-risk clauses**.
-  * Risk-sensitive revisions provide actionable insights for lawyers.
+**Outcomes**
+- Consistent clause labeling performance across all 41 clause types.  
+- Robust generalization to unseen contract structures.  
+- High interpretability through tier-wise clause visualization.
 
 ---
 
 ## 📝 Output & Reporting
 
-* **Classified CSV** with:
-  `predicted_class_id` | `Predicted Label` | `Tier` | `Clause`
-* **Tiered reporting** allows filtering:
-  * Focus on **Tier 1–2** clauses for legal review.
-  * **Tier 3–5** for reference or optional inspection.
-* **Abstractive summaries** generated using Gen AI summarize the contract at a high level.
-* **Comprehensive PDF Reports** include:
-  * Formatted **contract summary** with headings, bold key points.
-  * Visual **graphs** (pie charts, bar charts) for clause distribution, tier analysis, top clauses by frequency.
-  * Professional layout in **Times New Roman**, suitable for stakeholder presentation.
+**Outputs Produced:**
+- **CSV:**  
+  `Clause | Predicted_Label | Tier | Summary (optional)`  
+- **Tier-based Filtering:**  
+  View or export specific tiers for focused review.  
+- **Summarization:**  
+  Abstractive summaries generated using BART/PEGASUS.  
+- **PDF Reports:**  
+  Containing tier distribution charts, clause summaries, and contract overviews.
 
 ---
 
-## 📈 Visual Insights in the Report
+## 📈 Interpretation & Impact
 
-* **Pie charts**: distribution of clauses by Tier.
-* **Bar charts**: number of clauses per label, top 5 risky clauses.
-* **Combined graphs**: multi-view dashboard for contract analysis.
-* Graphs saved in a **Graphs/** folder and embedded in the PDF report.
-
----
-
-## 🔮 Interpretation & Impact
-
-* **Efficiency**: Faster contract review process with prioritized clauses.
-* **Risk Management**: Highlights clauses that may expose organizations to liability.
-* **Comprehensive Analysis**: Summary + visual analytics give stakeholders a complete view.
-* **Practical Use**: Can be integrated into **contract management systems**, legal AI assistants, or internal compliance dashboards.
+- **Efficiency:** Automates repetitive clause review tasks.  
+- **Prioritization:** Enables structured review via tiering.  
+- **Scalability:** Adapts to multiple contract domains and volumes.  
+- **Practicality:** Easily integrates with contract management systems or AI-assisted review dashboards.
 
 ---
 
-## ⚡ Next Steps / Extensions
+## 🔮 Future Directions
 
-* Integrate **automated alerts** for high-risk clause changes.
-* Add **multi-contract comparison** dashboards.
-* Extend to **multi-language contract processing**.
-* Add **interactive PDF reports** with clickable TOC and embedded charts.
+- Expansion to multilingual contracts and international law corpora.  
+- Incorporation of contextual retrieval (using ACORD dataset).  
+- Integration with interactive review dashboards for real-time clause analysis.  
+- Extension to clause revision and negotiation assistance.
 
 ---
-
