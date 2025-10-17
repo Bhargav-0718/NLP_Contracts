@@ -1,17 +1,18 @@
-# 📜 NLP Contract Summarization & Risk-Sensitive Clause Revision
+# 📜 NLP Contract Summarization & Risk-Sensitive Clause Review
 
-This project explores **NLP-based approaches** for **contract summarization** and **risk-sensitive clause review**, leveraging transformer-based models to help lawyers and organizations efficiently review complex contracts.
+This project explores **NLP-based approaches** for **contract summarization** and **risk-sensitive clause review**, leveraging transformer-based models to help lawyers and organizations efficiently analyze complex contracts.
 
 ---
 
 ## 🚀 Problem Statement
 
-Contracts contain **thousands of clauses** with varying risk levels. Manual review is time-consuming and error-prone. This project aims to:
+Contracts often contain **thousands of clauses** with varying risk levels. Manual review is time-consuming and error-prone. This project aims to:
 
 * Extract **key obligations, risks, and liabilities** from contracts.
-* Generate **summaries** for faster contract understanding.
+* Generate **abstractive summaries** for faster contract understanding.
 * Flag and suggest **revisions** for risky clauses.
 * **Tier clauses by criticality** to guide legal expert review.
+* Provide **graphical insights** for contract analysis (pie charts, bar charts, and more).
 
 ---
 
@@ -59,8 +60,8 @@ We primarily used **CUAD**, consisting of:
 
 * **Base Model**: [Legal-BERT](https://huggingface.co/nlpaueb/legal-bert-base-uncased).
 * **Clause Classification**: maps clause text → clause label → Tier.
-* **Summarization**: abstractive models (BART/PEGASUS fine-tuned) for generating contract summaries.
-* **Risk-Sensitive Revision**: generative LLM prompts to suggest safer clause rewrites.
+* **Summarization**: abstractive models (BART/PEGASUS fine-tuned or Gen AI) for generating contract summaries.
+* **Risk-Sensitive Revision**: generative LLM prompts suggest safer clause rewrites.
 
 ---
 
@@ -104,10 +105,22 @@ Clauses are grouped into **5 Tiers** based on **criticality**:
 * **Classified CSV** with:
   `predicted_class_id` | `Predicted Label` | `Tier` | `Clause`
 * **Tiered reporting** allows filtering:
-
   * Focus on **Tier 1–2** clauses for legal review.
   * **Tier 3–5** for reference or optional inspection.
 * **Abstractive summaries** generated using Gen AI summarize the contract at a high level.
+* **Comprehensive PDF Reports** include:
+  * Formatted **contract summary** with headings, bold key points.
+  * Visual **graphs** (pie charts, bar charts) for clause distribution, tier analysis, top clauses by frequency.
+  * Professional layout in **Times New Roman**, suitable for stakeholder presentation.
+
+---
+
+## 📈 Visual Insights in the Report
+
+* **Pie charts**: distribution of clauses by Tier.
+* **Bar charts**: number of clauses per label, top 5 risky clauses.
+* **Combined graphs**: multi-view dashboard for contract analysis.
+* Graphs saved in a **Graphs/** folder and embedded in the PDF report.
 
 ---
 
@@ -115,4 +128,17 @@ Clauses are grouped into **5 Tiers** based on **criticality**:
 
 * **Efficiency**: Faster contract review process with prioritized clauses.
 * **Risk Management**: Highlights clauses that may expose organizations to liability.
-* **Practical Use**: Can be integrated into **contract management systems** or **legal AI assistants**.
+* **Comprehensive Analysis**: Summary + visual analytics give stakeholders a complete view.
+* **Practical Use**: Can be integrated into **contract management systems**, legal AI assistants, or internal compliance dashboards.
+
+---
+
+## ⚡ Next Steps / Extensions
+
+* Integrate **automated alerts** for high-risk clause changes.
+* Add **multi-contract comparison** dashboards.
+* Extend to **multi-language contract processing**.
+* Add **interactive PDF reports** with clickable TOC and embedded charts.
+
+---
+
