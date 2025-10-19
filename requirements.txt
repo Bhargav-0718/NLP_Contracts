@@ -38,3 +38,6 @@ uvicorn
 api
 sql
 sqlalchemy
+papermill
+python-multipart
+streamlit
