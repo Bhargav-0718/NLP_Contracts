@@ -38,4 +38,5 @@ CUAD_v1
 legalbert_finetuned
 .env
 uploads/
-outputs/
+Graphs/
+output/
