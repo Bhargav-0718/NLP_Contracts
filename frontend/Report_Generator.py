@@ -114,17 +114,22 @@ def generate_pdf_report(csv_path, summary_path, output_pdf, graphs_dir):
     elements.append(Paragraph("Comprehensive Contract Analysis Report", styles['Heading1']))
     elements.append(Spacer(1,12))
 
-    for line in summary_text.split('\n'):
+    for line in lines:
         line = line.strip()
         if not line:
             continue
-        if line.startswith("-"):
-            elements.append(Paragraph("• " + line.lstrip("- ").strip(), styles['Bullet']))
-        elif ":" in line:
+    # Bold lines that start with "Key Obligations" or contain ":"
+        if line.startswith("**") or ":" in line:
+            line = line.replace("**", "")  # Remove Markdown bold markers
             elements.append(Paragraph(line, styles['Heading2']))
+        elif line.startswith("-"):
+        # Bullet points
+            line = line.lstrip("- ").strip()
+            elements.append(Paragraph("• " + line, styles['Bullet']))
         else:
             elements.append(Paragraph(line, styles['BodyText']))
     elements.append(Spacer(1,12))
+    
 
     # Add graphs
     graph_files = [
