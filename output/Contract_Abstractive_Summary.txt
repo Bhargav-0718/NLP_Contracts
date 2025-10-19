@@ -1,28 +1,23 @@
-**Comprehensive Summary of the Pizza Fusion Franchise Agreement**
+**Comprehensive Summary:**
 
-This Franchise Agreement between Pizza Fusion Holding, Inc. (“Franchisor”) and the Franchisee grants the Franchisee non-exclusive rights to operate a single Pizza Fusion restaurant at a franchisor-approved location, strictly adhering to the franchisor’s proprietary system, trademarks, secret recipes, operational standards, and territorial restrictions. The initial term is 10 years, with options for two additional 10-year renewals subject to compliance, timely notice (9-12 months before expiration), and payment of successor fees.
+This Consulting Agreement, effective February 1, 2020, between Coral Gold Resources Ltd. (the Company) and Intermark Capital Corp. (the Consultant), engages the Consultant to provide executive management and financial consulting services, including serving as President and CEO, through January 31, 2025. The Consultant’s obligations include delivering management and financial advisory services, aligning management initiatives with the Board’s strategic objectives, supervising staff, overseeing compliance, managing investor relations, and fostering organizational culture. The Consultant must devote sufficient time, skill, and loyalty to the role, including significant business travel.
 
-**Key Franchisee Obligations and Risks:**
+The Company agrees to pay the Consultant a monthly fee of CAD $10,000 plus reasonable expenses and applicable taxes, subject to potential increments by the Compensation Committee. The term is five years, with termination rights allowing either party to end the agreement upon three months’ written notice. Early termination by the Company triggers a termination payment equal to one year’s consulting fees (CAD $120,000). Additionally, the Consultant may terminate within six months following a Change of Control event—defined as acquisition of 20% or more voting power with board control or sale/merger of substantially all assets—and receive a termination payment of CAD $750,000.
 
-- **Fees and Payments:**  
-  - Initial franchise fee of $30,000 (non-refundable) due at signing.  
-  - Weekly royalties of 6% on gross revenues (excluding certain components by law).  
-  - Mandatory contributions to Marketing Fund (3% of gross revenues) and Regional Fund (2%, with possible increases up to an additional 2%).  
-  - Successor franchise fee upon renewal or transfer: $7,500 or 25% of current initial franchise fee, whichever is greater.  
-  - Late payments incur escalating fees ($100, $200, $300) plus 1.5% monthly interest.  
-  - Franchisee responsible for all taxes, insurance costs, and reimbursing franchisor for audit and inspection expenses.
+The agreement includes strict confidentiality obligations covering a broad scope of financial, technical, business, and proprietary information, which the Consultant must protect during and after the term. The Consultant must return all confidential materials upon termination and exercise reasonable care to prevent unauthorized disclosure. The Consultant is prohibited from soliciting or hiring the Company’s employees during the term and for one year thereafter.
 
-- **Operational Standards and Compliance:**  
-  - Strict adherence to franchisor’s secret recipes, manuals, “green” business practices, and quality standards for product, appearance, and service.  
-  - Franchisee must complete required initial and ongoing training for designated managers (up to 14 days pre- and post-opening), with franchisor approval controlling certification and training content.  
-  - Franchisee must maintain premises, equipment, delivery vehicles, and uniforms per franchisor specifications, including periodic refurbishments every 5 years.  
-  - Franchisee must obtain and maintain all necessary permits, licenses (including alcohol permits if applicable), and insurance policies with specified minimum coverages (e.g., $1M general liability, $3M aggregate).  
-  - Franchisee must use franchisor-approved suppliers exclusively for secret recipe products and obtain franchisor approval for any new suppliers or products.
+All intellectual property and work products created by the Consultant during the engagement are the exclusive property of the Company. The Consultant must assist in securing IP rights and maintain records accordingly. The Consultant acts as an independent contractor, solely responsible for all taxes related to fees paid and indemnifies the Company against any related claims. The Company may seek equitable remedies, including injunctions, to prevent breaches without needing to prove actual damages.
 
-- **Territorial and Use Restrictions:**  
-  - Operation limited to the approved premises and within defined Delivery/Catering and Advertising Areas; no sublicensing, relocation, or unauthorized sales outside approved channels without franchisor consent.  
-  - No territorial exclusivity; franchisor may operate or license competing businesses anywhere, including near the franchisee’s location.  
-  - Franchisee must comply with franchisor’s advertising approval process and spend minimum amounts on local marketing (3% of gross sales quarterly) and a $12,000 Grand Opening advertising program within 4 weeks of opening.
+The agreement limits liability for consequential damages and includes mutual indemnification provisions for losses arising from negligence, willful misconduct, fraud, or breach. It is governed by the laws of British Columbia, Canada, with disputes subject to BC courts. Notices must be in writing and delivered by specified methods, with waivers only effective if written and signed. The agreement contains standard provisions on severability, assignment restrictions, survival of key clauses, and interpretation rules emphasizing time sensitivity and Canadian dollar currency.
 
-- **Management and Ownership:**  
-  - Franchisee must have a full-time Certified Manager (Operating Principal) owning majority interest (or approved lesser interest)
+---
+
+**Prioritized Checklist for Human Review:**
+
+1. **Termination and Change of Control Provisions:**  
+   - Review conditions triggering termination payments, notice periods, and definitions of Change of Control to assess financial and operational risks.
+
+2. **Confidentiality and Non-Solicitation Clauses:**  
+   - Evaluate scope and duration of confidentiality obligations and non-solicitation restrictions for reasonableness and enforceability.
+
+3. **Intellectual Property Ownership and Assistance Obligations:**
