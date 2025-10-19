@@ -1,0 +1,47 @@
+                   ┌──────────────────────────────┐
+                   │         User (UI)            │
+                   │  Uploads Contract (PDF/DOCX) │
+                   │  Views Summary & Report Link │
+                   └──────────────┬───────────────┘
+                                  │
+                                  ▼
+                   ┌──────────────────────────────┐
+                   │        Streamlit App         │
+                   │ - File Upload UI             │
+                   │ - Calls FastAPI Endpoints    │
+                   │ - Displays Result            │
+                   └──────────────┬───────────────┘
+                                  │ HTTP (REST)
+                                  ▼
+                   ┌──────────────────────────────┐
+                   │          FastAPI API         │
+                   │  ├ /upload_contract          │
+                   │  ├ /analyze_contract         │
+                   │  ├ /get_report/{id}          │
+                   │  └ /list_contracts           │
+                   │                              │
+                   │  Integrates Model + DB Logic │
+                   └──────────────┬───────────────┘
+                                  │
+                                  ▼
+                   ┌──────────────────────────────┐
+                   │       NLP Model Layer        │
+                   │  - Summarization Pipeline    │
+                   │  - Clause Tier Classification│
+                   │  - Risk/Review Labeling      │
+                   └──────────────┬───────────────┘
+                                  │
+                                  ▼
+                   ┌──────────────────────────────┐
+                   │        PostgreSQL DB         │
+                   │ - Contracts metadata         │
+                   │ - Reports (paths, summaries) │
+                   │ - User data (optional)       │
+                   └──────────────┬───────────────┘
+                                  │
+                                  ▼
+                   ┌──────────────────────────────┐
+                   │        File Storage          │
+                   │ - Uploaded PDFs/DOCXs        │
+                   │ - Generated Reports (PDFs)   │
+                   └──────────────────────────────┘
