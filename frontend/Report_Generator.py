@@ -114,6 +114,7 @@ def generate_pdf_report(csv_path, summary_path, output_pdf, graphs_dir):
     elements.append(Paragraph("Comprehensive Contract Analysis Report", styles['Heading1']))
     elements.append(Spacer(1,12))
 
+    lines = summary_text.split('\n')
     for line in lines:
         line = line.strip()
         if not line:
