@@ -12,7 +12,6 @@ import os
 # -------------------------
 # Config: Paths
 # -------------------------
-MODEL_PATH = ("D:\AI\Projects\Contract_NLP\legalbert_finetuned")
 LABEL_ENCODER_PATH = ("D:\AI\Projects\Contract_NLP\label_encoder.pkl")
 OUTPUT_CSV_PATH = ("D:\AI\Projects\Contract_NLP\output\classified_contract.csv")
 
@@ -37,12 +36,17 @@ def split_into_clauses(text):
     return [c.strip() for c in clauses if len(c.strip()) > 20]
 
 # -------------------------
-# Load model and label encoder
+# Load model and label encoder (from Hugging Face)
 # -------------------------
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+MODEL_REPO = "bhargav-07-bidkar/Legalbert_Finetuned"
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_REPO)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_REPO)
 model.eval()
+
+# Keep your label encoder as is (local file)
 le = joblib.load(LABEL_ENCODER_PATH)
+
 
 # -------------------------
 # Prediction
