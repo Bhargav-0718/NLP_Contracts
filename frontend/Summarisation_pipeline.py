@@ -5,11 +5,10 @@ from docx import Document
 from openai import OpenAI
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# -------------------- Text Extraction -------------------- #
+# Text Extraction
 def extract_text_from_pdf(pdf_path: str) -> str:
     text = ""
     with pdfplumber.open(pdf_path) as pdf:
@@ -21,7 +20,7 @@ def extract_text_from_docx(docx_path: str) -> str:
     doc = Document(docx_path)
     return "\n".join([p.text for p in doc.paragraphs if p.text.strip()])
 
-# -------------------- OpenAI Summarization -------------------- #
+#OpenAI Summarization
 SUMMARIZATION_PROMPT = """
 You are a legal summarization assistant. Given the contract clause(s) below, create a concise, abstractive legal summary.
 Focus on: parties, effective/expiration dates, termination rights, payment/compensation obligations, liability caps, indemnities, IP ownership/licensing, exclusivity, and any unusual risks.
@@ -52,7 +51,6 @@ def summarize_chunk_openai(chunk_text: str, model: str = "gpt-4.1-mini", tempera
 def hierarchical_summary_openai(text: str, chunk_size_chars: int = 2500, overlap_chars: int = 200, model="gpt-4.1-mini"):
     text = re.sub(r'\n{2,}', '\n\n', text).strip()
     
-    # Split text into overlapping chunks
     chunks = []
     i = 0
     while i < len(text):
@@ -60,13 +58,12 @@ def hierarchical_summary_openai(text: str, chunk_size_chars: int = 2500, overlap
         chunks.append(chunk)
         i += chunk_size_chars - overlap_chars
 
-    # Summarize each chunk
+
     chunk_summaries = []
     for ch in chunks:
         summary = summarize_chunk_openai(ch, model=model)
         chunk_summaries.append(summary)
 
-    # Combine summaries and produce final summary
     combined = "\n\n".join(chunk_summaries)
     final_prompt = (
         "You are a legal summarization assistant. The following are intermediate summaries "
@@ -88,7 +85,7 @@ def hierarchical_summary_openai(text: str, chunk_size_chars: int = 2500, overlap
     final_summary = resp.choices[0].message.content.strip()
     return final_summary, chunk_summaries
 
-# -------------------- Main Function -------------------- #
+# Main Function
 def summarize_contract(file_path: str, output_path: str = None) -> str:
     """
     Summarize a contract file (PDF or DOCX) and save the abstractive summary.

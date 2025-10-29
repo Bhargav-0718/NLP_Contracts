@@ -4,9 +4,8 @@ from Input_pipeline import classify_contract
 from Summarisation_pipeline import hierarchical_summary_openai
 from Report_Generator import generate_pdf_report
 
-# -----------------------------
 # Setup paths
-# -----------------------------
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
 OUTPUT_DIR = ("D:\AI\Projects\Contract_NLP\output")
@@ -17,9 +16,8 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 st.set_page_config(page_title="Contract NLP Tool", layout="wide")
 st.title("📄 Contract NLP Tool")
 
-# -----------------------------
 # File upload
-# -----------------------------
+
 uploaded_file = st.file_uploader("Upload your contract (PDF or DOCX)", type=["pdf", "docx"])
 
 if uploaded_file is not None:
@@ -29,9 +27,8 @@ if uploaded_file is not None:
     
     st.success(f"File uploaded: {uploaded_file.name}")
 
-    # -----------------------------
     # Step 1: Clause Classification
-    # -----------------------------
+
     st.subheader("Step 1: Classifying Contract Clauses...")
     try:
         classified_df = classify_contract(uploaded_file_path)
@@ -48,9 +45,8 @@ if uploaded_file is not None:
     except Exception as e:
         st.error(f"Error during classification: {e}")
 
-    # -----------------------------
     # Step 2: Summarization
-    # -----------------------------
+
     st.subheader("Step 2: Generating Contract Summary...")
     try:
         final_summary, chunk_summaries = hierarchical_summary_openai(
@@ -73,9 +69,8 @@ if uploaded_file is not None:
     except Exception as e:
         st.error(f"Error during summarization: {e}")
 
-    # -----------------------------
     # Step 3: Generate PDF Report
-    # -----------------------------
+
     st.subheader("Step 3: Generating PDF Report...")
     try:
         pdf_path = os.path.join(OUTPUT_DIR, "Contract_Analysis_Report.pdf")
