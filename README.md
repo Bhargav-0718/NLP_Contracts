@@ -106,7 +106,7 @@ Once unified, the following text processing pipeline was applied:
 ## 🧠 Model Architecture
 
 ### 1. **Clause Classification**
-- **Model:** [Legal-BERT](https://huggingface.co/nlpaueb/legal-bert-base-uncased)  
+- **Model:** [Legal-BERT Finetuned](https://huggingface.co/bhargav-07-bidkar/Legalbert_Finetuned)  
 - **Objective:** Classify clauses into predefined clause types and assign them a Tier.  
 - **Output:** `(Clause Text → Label → Tier)`
 
