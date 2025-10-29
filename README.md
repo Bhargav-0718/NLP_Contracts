@@ -1,7 +1,7 @@
 # 📜 NLP Contract Summarization & Tier-wise Clause Review
 
 This project presents an **NLP-powered framework** for **automated contract summarization** and **tier-wise clause classification**, helping legal professionals and organizations efficiently interpret and prioritize contractual information.  
-By leveraging transformer-based models such as **Legal-BERT**, **BART**, and **PEGASUS**, the system identifies, categorizes, and summarizes clauses to enhance accuracy, speed, and strategic decision-making in contract analysis.
+By leveraging transformer-based models such as **Legal-BERT**, and **OpenAI**, the system identifies, categorizes, and summarizes clauses to enhance accuracy, speed, and strategic decision-making in contract analysis.
 
 ---
 
@@ -13,7 +13,7 @@ This project automates that process by:
 - **Extracting clauses** from PDF/DOCX contracts.  
 - **Classifying each clause** using Legal-BERT into predefined categories.  
 - **Assigning Tier levels (1–5)** based on clause criticality and review priority.  
-- **Generating concise, abstractive summaries** using Gen AI (BART/PEGASUS).  
+- **Generating concise, abstractive summaries** using OpenAI GPT 4.1-mini.  
 - **Producing structured reports and CSV outputs** for downstream legal workflows.
 
 The end goal is to streamline legal document review and enable faster, tier-based contract understanding.
@@ -111,7 +111,7 @@ Once unified, the following text processing pipeline was applied:
 - **Output:** `(Clause Text → Label → Tier)`
 
 ### 2. **Contract Summarization**
-- **Models:** [BART](https://huggingface.co/facebook/bart-large-cnn) / [PEGASUS](https://huggingface.co/google/pegasus-large)  
+- **Models:** [GPT-4.1-mini](https://platform.openai.com/docs/models#gpt-4-1-mini)
 - **Objective:** Generate **abstractive summaries** capturing the key points of the entire contract or selected tiers.  
 - **Output:** Coherent, domain-aware summaries suitable for professional review.
 
@@ -152,11 +152,11 @@ Clauses are categorized into **five Tiers** based on their importance, contractu
 
 **Outputs Produced:**
 - **CSV:**  
-  `Clause | Predicted_Label | Tier | Summary (optional)`  
+  `Clause | Predicted_Label | Tier `  
 - **Tier-based Filtering:**  
   View or export specific tiers for focused review.  
 - **Summarization:**  
-  Abstractive summaries generated using BART/PEGASUS.  
+  Abstractive summaries generated using OpenAI GPT 4.1-mini.  
 - **PDF Reports:**  
   Containing tier distribution charts, clause summaries, and contract overviews.
 
