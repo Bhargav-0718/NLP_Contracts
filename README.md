@@ -1,181 +1,186 @@
-# 📜 NLP Contract Summarization & Tier-wise Clause Review
+# 📜 NLP Contract Summarization & Tier-wise Clause Review  
 
-This project presents an **NLP-powered framework** for **automated contract summarization** and **tier-wise clause classification**, helping legal professionals and organizations efficiently interpret and prioritize contractual information.  
-By leveraging transformer-based models such as **Legal-BERT**, and **OpenAI**, the system identifies, categorizes, and summarizes clauses to enhance accuracy, speed, and strategic decision-making in contract analysis.
+This project presents an **NLP-powered framework** for automated contract summarization and **tier-wise clause classification**, designed to help legal professionals and organizations efficiently interpret and prioritize contractual information.  
 
----
-
-## 🚀 Project Overview
-
-Manual contract review is often **slow, repetitive, and complex**, requiring domain expertise to evaluate hundreds of clauses per agreement.  
-This project automates that process by:
-
-- **Extracting clauses** from PDF/DOCX contracts.  
-- **Classifying each clause** using Legal-BERT into predefined categories.  
-- **Assigning Tier levels (1–5)** based on clause criticality and review priority.  
-- **Generating concise, abstractive summaries** using OpenAI GPT 4.1-mini.  
-- **Producing structured reports and CSV outputs** for downstream legal workflows.
-
-The end goal is to streamline legal document review and enable faster, tier-based contract understanding.
+By leveraging transformer-based models such as **Legal-BERT** and **OpenAI GPT-4.1-mini**, the system identifies, categorizes, and summarizes contractual clauses — enhancing **accuracy, speed, and decision-making** in legal document analysis.  
 
 ---
 
-## 🧩 Problem Statement
+## 🚀 Project Overview  
 
-Contract review teams often face challenges such as:
+Manual contract review is often slow, repetitive, and complex, requiring domain expertise to evaluate hundreds of clauses per agreement.  
+This project automates that process through the following key steps:  
 
-- Large volumes of lengthy contracts with inconsistent structures.  
-- Difficulty identifying key obligations and conditions quickly.  
-- Time-intensive manual analysis requiring specialized expertise.  
-- The need for standardized prioritization of clauses.  
+- 🧾 **Clause Extraction** from PDF/DOCX contracts.  
+- 🧠 **Classification** of each clause using a fine-tuned Legal-BERT model into predefined categories.  
+- 🏷️ **Tier Assignment** (1–5) based on clause criticality and review priority.  
+- ✍️ **Summarization** using GPT-4.1-mini to produce concise, abstractive summaries.  
+- 📊 **Report Generation** in CSV and PDF formats for structured downstream legal workflows.  
 
-This project addresses these issues by combining **Legal NLP** and **Generative AI** to automatically extract, summarize, and categorize contractual content, supporting efficient legal review and prioritization.
+The goal is to **streamline legal document review**, enabling faster and more consistent tier-based understanding of contractual information.  
 
 ---
 
-## 📚 Literature Review
+## 🧩 Problem Statement  
 
-Several research efforts and datasets have contributed to the advancement of **legal NLP** tasks such as clause classification, contract understanding, and summarization. Key references include:
+Contract review teams often face major challenges such as:  
+- Large volumes of lengthy, inconsistently formatted contracts.  
+- Difficulty in quickly identifying key obligations and risk-bearing clauses.  
+- Time-intensive manual analysis requiring specialized legal expertise.  
+- Lack of standardized prioritization mechanisms for clause importance.  
+
+This project addresses these problems by combining **Legal NLP** and **Generative AI** to automatically extract, classify, and summarize contractual content, creating a structured and prioritized workflow for legal review.  
+
+---
+
+## 📚 Literature Review  
+
+Several benchmark datasets have shaped progress in Legal NLP, particularly in clause classification and contract understanding.  
 
 | Dataset / Benchmark | Description | Links |
-|----------------------|-------------|--------|
-| **CUAD (Contract Understanding Atticus Dataset)** | 510 contracts with ~13K annotated clauses across 41 clause types for contract understanding. | [Paper](https://arxiv.org/abs/2103.06268) • [GitHub](https://github.com/TheAtticusProject/cuad) |
-| **MAUD (Merger Agreement Understanding Dataset)** | Clause-level question answering in merger agreements. | [Paper](https://arxiv.org/html/2301.00876) |
-| **LexGLUE / LEDGAR** | Large-scale legal document classification from SEC filings. | [Paper](https://aclanthology.org/2022.acl-long.297.pdf) |
-| **LegalBench** | Benchmark for evaluating legal reasoning in LLMs. | [Paper](https://arxiv.org/abs/2308.11462) |
+|---------------------|--------------|-------|
+| **CUAD (Contract Understanding Atticus Dataset)** | 510 contracts with ~13K annotated clauses across 41 clause types for contract understanding. | Paper • GitHub |
+| **MAUD (Merger Agreement Understanding Dataset)** | Clause-level question answering in merger agreements. | Paper |
+| **LexGLUE / LEDGAR** | Large-scale legal document classification from SEC filings. | Paper |
+| **LegalBench** | Benchmark for evaluating legal reasoning in LLMs. | Paper |
 | **ACORD** | Dataset for clause retrieval and document drafting workflows. | — |
 
-These benchmarks guided the design of our clause classification and summarization pipelines.
+These benchmarks inspired the design of the project’s **clause classification and summarization pipeline**.  
 
 ---
 
-## 📂 Dataset Details
+## 📂 Dataset Details  
 
-This project primarily utilizes the **CUAD dataset**, which provides high-quality, expert-labeled contract data.
+The project primarily utilizes the **CUAD dataset**, which provides high-quality, expert-labeled contract data.  
 
-**Dataset Specifications:**
-- **510 commercial contracts**
-- **13,000+ annotated clauses**
-- **41 clause types** (e.g., Termination, Liability, Indemnification, IP Ownership)
-- **Mapped to 5 review tiers** for prioritization
+**Specifications:**  
+- 510 commercial contracts  
+- 13,000+ annotated clauses  
+- 41 clause types (e.g., Termination, Liability, IP Ownership, Indemnification)  
+- Each mapped to one of **five review tiers** for prioritization  
 
-The dataset enables fine-tuning of both classification and summarization models for realistic legal document workflows.
-
----
-
-## ⚙️ Preprocessing Pipeline
-
-### 🧾 Early Data Aggregation
-
-The original CUAD dataset was distributed as **~30 separate CSV files**, each corresponding to a distinct clause type (e.g., *Termination.csv*, *Liability.csv*, *Indemnification.csv*).  
-Each file contained clause-level annotations with the following columns:
-- **Contract Name**
-- **Clause Text**
-- **Clause Type**
-
-To streamline training and simplify downstream processing, these CSVs were **consolidated into a unified dataset:**
-
-> ✅ **`combined_clauses.csv`**
-
-**Steps for Aggregation:**
-1. Loaded all individual CSV files using `pandas`.  
-2. Added a `label` column representing the clause type derived from the filename.  
-3. Concatenated all dataframes into a single structure.  
-4. Normalized text by removing duplicates, newlines, and extra spaces.  
-5. Saved the combined corpus as `combined_clauses.csv` containing:  
-   ```
-   [Clause Text, Label]
-   ```
-
-This unified dataset serves as the foundational input for clause classification and tier assignment.
+This dataset supports **fine-tuning** of both classification and summarization models for realistic, domain-specific contract workflows.  
 
 ---
 
-### 🧮 Text Preprocessing Steps
+## ⚙️ Preprocessing Pipeline  
 
-Once unified, the following text processing pipeline was applied:
+### 🧾 Early Data Aggregation  
+The CUAD dataset was originally distributed as ~30 clause-specific CSV files (e.g., *Termination.csv*, *Liability.csv*).  
+To simplify training, these were consolidated into a single dataset — **combined_clauses.csv** — containing two key columns:  
+`[Clause Text, Label]`  
 
-1. **Text Extraction** — Extracted text from PDFs using `pdfplumber` and DOCX files using `python-docx`.  
-2. **Segmentation** — Divided contracts into **clauses** and **paragraphs** based on linguistic cues and punctuation.  
-3. **Cleaning** — Removed headers, footers, numbering, and redundant whitespace.  
-4. **Label Mapping** — Mapped CUAD clause labels to standardized labels for consistency.  
-5. **Tier Assignment** — Assigned each label to one of five predefined Tiers for review prioritization.
+**Steps:**  
+1. Loaded all CSVs using `pandas`.  
+2. Added a `label` column based on filename.  
+3. Concatenated and cleaned the text (duplicates, newlines, whitespace).  
+4. Saved as **combined_clauses.csv**, forming the foundation for model fine-tuning.  
 
----
-
-## 🧠 Model Architecture
-
-### 1. **Clause Classification**
-- **Model:** [Legal-BERT Finetuned](https://huggingface.co/bhargav-07-bidkar/Legalbert_Finetuned)  
-- **Objective:** Classify clauses into predefined clause types and assign them a Tier.  
-- **Output:** `(Clause Text → Label → Tier)`
-
-### 2. **Contract Summarization**
-- **Models:** [GPT-4.1-mini](https://platform.openai.com/docs/models#gpt-4-1-mini)
-- **Objective:** Generate **abstractive summaries** capturing the key points of the entire contract or selected tiers.  
-- **Output:** Coherent, domain-aware summaries suitable for professional review.
-
-### 3. **Integration**
-- Combined pipeline produces a **tiered summary** for each contract, linking clause predictions to summarization output.
+### 🧮 Text Preprocessing Steps  
+- **Extraction:** Retrieved text using `pdfplumber` (PDFs) and `python-docx` (Word docs).  
+- **Segmentation:** Divided text into clause-level segments using linguistic cues.  
+- **Cleaning:** Removed headers, numbering, and irrelevant metadata.  
+- **Label Mapping:** Unified CUAD labels into a standardized taxonomy.  
+- **Tier Assignment:** Allocated each label into Tiers 1–5 for review prioritization.  
 
 ---
 
-## 🏷️ Tier System
+## 🧠 Model Architecture  
 
-Clauses are categorized into **five Tiers** based on their importance, contractual implications, and review priority.
+### 1. Clause Classification  
+- **Model:** Legal-BERT (fine-tuned)  
+- **Objective:** Classify each clause into one of 41 legal categories and assign a Tier.  
+- **Output:** `(Clause Text → Label → Tier)`  
 
-| **Tier** | **Description** | **Typical Clauses (Examples)** |
-|-----------|-----------------|-------------------------------|
-| **Tier 1 — Critical** | Core clauses that significantly influence contractual terms; require top-priority review. | Termination, Liability, IP Ownership, Governing Law, Exclusivity |
-| **Tier 2 — Important** | Clauses defining major obligations or constraints that should be reviewed carefully. | Non-Compete, Indemnification, Insurance, Joint IP Ownership |
-| **Tier 3 — Moderate** | Common operational clauses; generally standard but may vary across contracts. | Warranty Duration, Renewal Terms |
-| **Tier 4 — Low** | Administrative or procedural clauses that seldom require in-depth analysis. | Notice Periods, Third-Party Beneficiary |
-| **Tier 5 — Trivial / Informational** | Basic document-level metadata and boilerplate elements. | Effective Date, Parties, Document Name |
+### 2. Contract Summarization  
+- **Model:** OpenAI GPT-4.1-mini  
+- **Objective:** Generate abstractive summaries of entire contracts or tier-specific clauses.  
+- **Output:** Professional, domain-aware summaries highlighting key legal implications.  
 
----
-
-## 📊 Training & Evaluation
-
-**Setup**
-- Fine-tuned **Legal-BERT** on the `combined_clauses.csv` dataset.  
-- Evaluated on held-out clauses using **Accuracy** and **F1 Score** metrics.  
-- Conducted experiments on GPU (A100/RTX-class hardware).
-
-**Outcomes**
-- Consistent clause labeling performance across all 41 clause types.  
-- Robust generalization to unseen contract structures.  
-- High interpretability through tier-wise clause visualization.
+### 3. Integration  
+The full pipeline integrates both modules to produce a **tiered summary** of each contract, combining structured classification with narrative summarization.  
 
 ---
 
-## 📝 Output & Reporting
+## 🏷️ Tier System  
 
-**Outputs Produced:**
-- **CSV:**  
-  `Clause | Predicted_Label | Tier `  
-- **Tier-based Filtering:**  
-  View or export specific tiers for focused review.  
-- **Summarization:**  
-  Abstractive summaries generated using OpenAI GPT 4.1-mini.  
-- **PDF Reports:**  
-  Containing tier distribution charts, clause summaries, and contract overviews.
+Clauses are organized into five **priority tiers** based on legal criticality and impact.  
 
----
-
-## 📈 Interpretation & Impact
-
-- **Efficiency:** Automates repetitive clause review tasks.  
-- **Prioritization:** Enables structured review via tiering.  
-- **Scalability:** Adapts to multiple contract domains and volumes.  
-- **Practicality:** Easily integrates with contract management systems or AI-assisted review dashboards.
+| Tier | Description | Typical Clauses |
+|------|--------------|----------------|
+| **Tier 1 — Critical** | Core clauses that define fundamental obligations; require top-priority review. | Termination, Liability, IP Ownership, Governing Law, Exclusivity |
+| **Tier 2 — Important** | Major operational and legal commitments. | Indemnification, Insurance, Non-Compete, Joint IP Ownership |
+| **Tier 3 — Moderate** | Common operational clauses, standard across most contracts. | Renewal Terms, Warranty Duration |
+| **Tier 4 — Low** | Administrative or low-impact clauses. | Notice Periods, Third-Party Beneficiary |
+| **Tier 5 — Trivial / Informational** | Generic metadata and boilerplate. | Effective Date, Parties, Document Name |  
 
 ---
 
-## 🔮 Future Directions
+## 📊 Training & Evaluation  
 
-- Expansion to multilingual contracts and international law corpora.  
-- Incorporation of contextual retrieval (using ACORD dataset).  
-- Integration with interactive review dashboards for real-time clause analysis.  
-- Extension to clause revision and negotiation assistance.
+### ⚙️ Setup  
+- **Model:** Legal-BERT fine-tuned on `combined_clauses.csv`  
+- **Hardware:** NVIDIA A100 / RTX-class GPU  
+- **Metrics:** Accuracy, F1-Score, Training & Validation Loss  
+
+### 📈 Results  
+
+| Epoch | Training Loss | Validation Loss | Accuracy | F1 Score |
+|--------|----------------|------------------|-----------|-----------|
+| 1 | 0.9509 | 0.8081 | 0.7532 | 0.7043 |
+| 2 | 0.6416 | 0.6663 | 0.7798 | 0.7432 |
+| 3 | **0.5214** | **0.6565** | **0.7822** | **0.7549** |
+
+**Final Training Summary:**  
+```bash
+TrainOutput(global_step=2913, training_loss=0.9271, metrics={
+ 'train_runtime': 25027.72,
+ 'train_samples_per_second': 0.931,
+ 'train_steps_per_second': 0.116,
+ 'total_flos': 3.07e15,
+ 'train_loss': 0.9271,
+ 'epoch': 3.0
+})
+```
+
+✅ The model achieved strong generalization with an **Accuracy of 78.2%** and **F1 score of 75.5%**, demonstrating reliable clause identification and tier prediction across unseen contracts.  
 
 ---
+
+## 📝 Output & Reporting  
+
+**Generated Outputs:**  
+- 📁 **CSV:**  
+  `Clause | Predicted_Label | Tier`  
+- 🎯 **Tier-wise Filtering:**  
+  Extract or visualize specific tiers for focused review.  
+- 🧾 **Summarization:**  
+  Abstractive summaries using GPT-4.1-mini for each contract.  
+- 📑 **PDF Reports:**  
+  Visual tier distribution charts, clause summaries, and contract overviews.  
+
+---
+
+## 📈 Interpretation & Impact  
+
+| Aspect | Impact |
+|--------|---------|
+| **Efficiency** | Automates repetitive clause review tasks, reducing manual effort. |
+| **Prioritization** | Enables structured, tier-based clause assessment. |
+| **Scalability** | Adaptable to various contract types and volumes. |
+| **Practicality** | Seamless integration into legal dashboards or document review tools. |
+
+Overall, the system achieves a **balanced trade-off between performance, interpretability, and automation**, making it a practical solution for legal contract intelligence.  
+
+---
+
+## 🔮 Future Directions  
+
+- 🌍 Expansion to **multilingual contract datasets** and international law corpora.  
+- 📚 Incorporation of **contextual retrieval** mechanisms using ACORD-style datasets.  
+- 💻 Development of **interactive dashboards** for real-time clause visualization and review.  
+- 🤝 Extension into **clause revision, negotiation support,** and legal reasoning tasks.  
+
+---
+
+✅ **In summary**, this project demonstrates a robust end-to-end Legal NLP pipeline integrating **Legal-BERT** and **GPT-4.1-mini** to automate clause classification, tier prioritization, and summarization — delivering measurable improvements in accuracy, interpretability, and review efficiency.  
